@@ -1,0 +1,68 @@
+# --- Python basics ---
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.egg-info/
+.build/
+dist/
+build/
+
+# --- Virtual envs ---
+.venv/
+venv/
+env/
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- IDE / OS junk ---
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs & debugging ---
+logs/
+*.log
+nohup.out
+
+# --- Tests / tooling caches ---
+.pytest_cache/
+.mypy_cache/
+coverage.xml
+htmlcov/
+.coverage*
+
+# --- Data (raw/derived) ---
+data/
+datasets/
+cache/
+.tmp/
+tmp/
+
+# --- Training outputs ---
+outputs/
+samples/
+results/
+runs/                # tensorboard
+lightning_logs/
+wandb/
+checkpoints/
+# common weight/checkpoint file types
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+
+# --- Models downloaded (if you cache locally) ---
+models/
+pretrained/
+
+# --- Config/secrets (keep a sample committed instead) ---
+.env
+.env.*               # .env.local, etc.
+*.secret.*
