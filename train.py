@@ -62,7 +62,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--epochs", type=int, default=50)
     p.add_argument("--batch_size", type=int, default=128)
-    p.add_argument("--lr", type=float, default=2e-4)
+    p.add_argument("--lr", type=float, default=5e-5)
     p.add_argument("--weight_decay", type=float, default=0.0)
     p.add_argument("--save_every", type=int, default=1000, help="save checkpoint every N steps")
     p.add_argument("--sample_every", type=int, default=2000, help="save sample grid every N steps")
@@ -72,6 +72,7 @@ def main():
     p.add_argument("--timesteps", type=int, default=1000)
     p.add_argument("--workers", type=int, default=2)
     p.add_argument("--no_amp", action="store_true", help="disable mixed precision")
+    
     
 
     
@@ -89,7 +90,7 @@ def main():
     alphas = precompute_alphas(betas)
 
     # model / opt / scaler / ema
-    model = UNetTiny(in_ch=3, base=64, time_dim=128).to(device)
+    model = UNetTiny(in_ch=3, base=32, time_dim=128).to(device)
     opt = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     scaler = torch.cuda.amp.GradScaler(enabled=(torch.cuda.is_available() and not args.no_amp))
     ema = EMA(model, decay=args.ema_decay)
