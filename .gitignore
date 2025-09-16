@@ -66,3 +66,5 @@ pretrained/
 .env
 .env.*               # .env.local, etc.
 *.secret.*
+
+test.py

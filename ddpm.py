@@ -381,8 +381,20 @@ def sample_loop(model, cfg: DiffusionConfig, alphas_dict: dict,
 
 
 
-# Quick sanity test (optional to keep):
+# ...existing code...
 if __name__ == "__main__":
-    cfg = DiffusionConfig(T=1000, schedule="cosine")
-    betas = make_beta_schedule(cfg)
-    print("betas:", betas.shape, "min:", float(betas.min()), "max:", float(betas.max()))
+    import torchvision
+    import torchvision.transforms as transforms
+
+    # Load CelebA dataset (faces, 64x64)
+    transform = transforms.Compose([
+        transforms.Resize(64),
+        transforms.CenterCrop(64),
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: x * 2 - 1)
+    ])
+    dataset = torchvision.datasets.CelebA(root="./data", split="train", download=True, transform=transform)
+    train_loader = torch.utils.data.DataLoader(dataset, batch_size=16, shuffle=True)
+
+    show_batch_images(train_loader, num_images=8)
+# ...existing code...

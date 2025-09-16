@@ -5,6 +5,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from torchvision.utils import save_image
+from torchvision import datasets
 
 from ddpm import (
     DiffusionConfig, make_beta_schedule, precompute_alphas,
@@ -31,13 +32,14 @@ class EMA:
         model.load_state_dict(self.shadow, strict=True)
 
 
-def make_loader(batch_size=64, img_size=32, num_workers=2, pin_memory=True):
+def make_loader(batch_size=64, img_size=64, num_workers=2, pin_memory=True):
     tfm = transforms.Compose([
         transforms.Resize((img_size, img_size)),
+        transforms.CenterCrop(img_size),
         transforms.ToTensor(),
-        transforms.Normalize([0.5]*3, [0.5]*3),  # -> [-1,1]
+        transforms.Normalize([0.5]*3, [0.5]*3),
     ])
-    ds = datasets.CIFAR10(root="./data", train=True, download=True, transform=tfm)
+    ds = datasets.ImageFolder(root="./data/celeba", transform=tfm)
     return DataLoader(ds, batch_size=batch_size, shuffle=True,
                       num_workers=num_workers, pin_memory=pin_memory)
 
@@ -70,6 +72,9 @@ def main():
     p.add_argument("--timesteps", type=int, default=1000)
     p.add_argument("--workers", type=int, default=2)
     p.add_argument("--no_amp", action="store_true", help="disable mixed precision")
+    
+
+    
     args = p.parse_args()
 
     cfg = DiffusionConfig(T=args.timesteps)
